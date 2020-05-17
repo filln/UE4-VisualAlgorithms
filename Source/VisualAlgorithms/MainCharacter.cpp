@@ -5,6 +5,7 @@
 #include "SortingAlgorithms.h"
 #include "AlgorithmsManager.h"
 #include "SortingArrayBuilder.h"
+#include "DataAlgorithms.h"
 #include "VisualAlgorithmsGameModeBase.h"
 
 // Sets default values
@@ -47,6 +48,19 @@ ASortingArrayBuilder* AMainCharacter::GetSortingArrayBuilder() const
 	if (GameMode)
 	{
 		return GameMode->GetSortingArrayBuilder();
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+ADataAlgorithms* AMainCharacter::GetDataAlgorithms() const
+{
+	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
+	if (GameMode)
+	{
+		return GameMode->GetDataAlgorithms();
 	}
 	else
 	{

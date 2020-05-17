@@ -3,6 +3,8 @@
 
 #include "SortingAlgorithms.h"
 #include "VisualAlgorithmsGameModeBase.h"
+#include "DataAlgorithms.h"
+#include <random>
 
 // Sets default values
 ASortingAlgorithms::ASortingAlgorithms()
@@ -23,9 +25,65 @@ void ASortingAlgorithms::SetReferenceToThis()
 	}
 }
 
-void ASortingAlgorithms::BubbleSort(TArray<uint8>& Arr)
+void ASortingAlgorithms::ShuffleArray(TArray<int32>& Arr)
+{
+	size_t lastIndex = Arr.Num() - 1;
+
+	std::random_device rd;
+
+	//	std::mt19937 generator(rd());
+	std::default_random_engine generator(rd());
+
+	for (size_t index = 0; index <= lastIndex; index++)
+	{
+		std::uniform_int_distribution<int> distribution(0, (int)lastIndex);
+		size_t randomIndex = distribution(generator);
+
+		if (randomIndex == index)
+		{
+			if (randomIndex == lastIndex)
+			{
+				--randomIndex;
+			}
+			else
+			{
+				++randomIndex;
+			}
+		}
+
+		Arr.Swap(index, randomIndex);
+
+		WriteSwapData(index, randomIndex);
+
+	}
+
+}
+
+void ASortingAlgorithms::BubbleSort(TArray<int32>& Arr)
 {
 
+}
+
+ADataAlgorithms* ASortingAlgorithms::GetDataAlgorithms() const
+{
+	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
+	if (GameMode)
+	{
+		return GameMode->GetDataAlgorithms();
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+void ASortingAlgorithms::WriteSwapData(int32 Index1, int32 Index2)
+{
+	ADataAlgorithms* DataAlgorithms = GetDataAlgorithms();
+	if (DataAlgorithms)
+	{
+		DataAlgorithms->WriteSwapData(Index1, Index2);
+	}
 }
 
 // Called when the game starts or when spawned

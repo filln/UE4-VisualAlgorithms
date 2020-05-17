@@ -3,12 +3,15 @@
 
 #include "AlgorithmsManager.h"
 #include "VisualAlgorithmsGameModeBase.h"
+#include "DataAlgorithms.h"
 
 // Sets default values
 AAlgorithmsManager::AAlgorithmsManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+
+	bIsRunVisualization = false;
 
 }
 
@@ -23,7 +26,30 @@ void AAlgorithmsManager::SetReferenceToThis()
 
 void AAlgorithmsManager::RunVisualization()
 {
+	SetbIsRunVisualization(true);
 
+
+
+	ADataAlgorithms* DataAlgorithms = GetDataAlgorithms();
+	if (DataAlgorithms)
+	{
+		DataAlgorithms->ClearSwapData();
+	}
+	SetbIsRunVisualization(false);
+	
+}
+
+ADataAlgorithms* AAlgorithmsManager::GetDataAlgorithms() const
+{
+	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
+	if (GameMode)
+	{
+		return GameMode->GetDataAlgorithms();
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 // Called when the game starts or when spawned

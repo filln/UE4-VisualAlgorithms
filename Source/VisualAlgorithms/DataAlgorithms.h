@@ -12,8 +12,8 @@ struct FSwapStruct
 {
 	GENERATED_USTRUCT_BODY()
 
-	uint8 Index1;
-	uint8 Index2;
+	int32 Index1;
+	int32 Index2;
 };
 
 UCLASS()
@@ -39,7 +39,9 @@ public:
 		void SetReferenceToThis();
 
 	UFUNCTION(BlueprintCallable, Category = "DataAlgorithms")
-		void WriteSwapData(uint8 Index1, uint8 Index2);
+		void WriteSwapData(int32 Index1, int32 Index2);
+	UFUNCTION(BlueprintCallable, Category = "DataAlgorithms")
+		void ClearSwapData();
 
 protected:
 	// Called when the game starts or when spawned

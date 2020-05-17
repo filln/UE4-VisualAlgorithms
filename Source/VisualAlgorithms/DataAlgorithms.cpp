@@ -22,9 +22,17 @@ void ADataAlgorithms::SetReferenceToThis()
 	}
 }
 
-void ADataAlgorithms::WriteSwapData(uint8 index1, uint8 index2)
+void ADataAlgorithms::WriteSwapData(int32 Index1, int32 Index2)
 {
+	FSwapStruct SwapStruct;
+	SwapStruct.Index1 = Index1;
+	SwapStruct.Index2 = Index2;
+	SwapStructArr.Add(SwapStruct);
+}
 
+void ADataAlgorithms::ClearSwapData()
+{
+	SwapStructArr.Empty();
 }
 
 // Called when the game starts or when spawned

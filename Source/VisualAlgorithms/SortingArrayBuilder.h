@@ -21,10 +21,24 @@ public:
 	//Public UPROPERTY variables
 public:
 
-	UPROPERTY(EditAnywhere, Category = "SortingArrayBuilder")
-		uint8 CountOfElements;
+	UPROPERTY(EditDefaultsOnly, meta=(ClampMin="0"), Category = "SortingArrayBuilder")
+		int32 CountOfElements;
+	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
+		FVector BeginLocation;
+	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
+		FVector DeltaLocation;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SortingArrayBuilder")
-		TArray<uint8> SortingArray;
+		TArray<int32> SortingArray;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SortingArrayBuilder")
+		TArray<AIndexActor*> IndexActorsArray;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "SortingArrayBuilder")
+		TArray<AValueActor*> ValueActorsArray;
+
+	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
+		TSubclassOf<AIndexActor> IndexActorClass;
+	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
+		TSubclassOf<AValueActor> ValueActorClass;
 
 	//Public UFUNCTION functions;
 public:
@@ -36,15 +50,12 @@ public:
 		void BuildSortingArray();
 
 	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
-		void BuildIndexActors();
+		void BuildVisibleArray();
 
 	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
-		void BuildValueActors();
-	
+		void SetCountOfElements(int32 InCountOfElements) { CountOfElements = InCountOfElements; }
 	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
-		void SetCountOfElements(uint8 InCountOfElements) { CountOfElements = InCountOfElements; }
-	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
-		uint8 GetCountOfElements() const { return CountOfElements; }
+		int32 GetCountOfElements() const { return CountOfElements; }
 
 
 protected:
@@ -54,5 +65,6 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 };

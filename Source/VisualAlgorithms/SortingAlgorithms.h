@@ -6,12 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "SortingAlgorithms.generated.h"
 
+class ADataAlgorithms;
+
 UCLASS()
 class VISUALALGORITHMS_API ASortingAlgorithms : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ASortingAlgorithms();
 
@@ -22,13 +24,26 @@ public:
 		void SetReferenceToThis();
 
 	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
-	void BubbleSort(UPARAM(ref) TArray<uint8>& Arr);
+		void ShuffleArray(UPARAM(ref) TArray<int32>& Arr);
+
+	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void BubbleSort(UPARAM(ref) TArray<int32>& Arr);
+
+	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
+		void WriteSwapData(int32 Index1, int32 Index2);
+
+
+	//Private functions.
+private:
+
+	ADataAlgorithms* GetDataAlgorithms() const;
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

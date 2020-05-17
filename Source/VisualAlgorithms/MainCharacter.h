@@ -9,7 +9,7 @@
 class ASortingAlgorithms;
 class AAlgorithmsManager;
 class ASortingArrayBuilder;
-
+class ADataAlgorithms;
 UCLASS()
 class VISUALALGORITHMS_API AMainCharacter : public ACharacter
 {
@@ -28,6 +28,8 @@ public:
 		AAlgorithmsManager* GetAlgorithmsManager() const;
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
 		ASortingArrayBuilder* GetSortingArrayBuilder() const;
+	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
+		ADataAlgorithms* GetDataAlgorithms() const;
 
 protected:
 	// Called when the game starts or when spawned

@@ -8,6 +8,7 @@
 
 class UBoxComponent;
 class UStaticMeshComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class VISUALALGORITHMS_API AIndexActor : public AActor
@@ -20,10 +21,12 @@ public:
 
 public:
 
-	UPROPERTY(EditDefaultsOnly, Category = "IndexActor")
+	UPROPERTY(VisibleAnywhere, Category = "IndexActor")
 		UBoxComponent* BoxCollision;
-	UPROPERTY(EditDefaultsOnly, Category = "IndexActor")
+	UPROPERTY(VisibleAnywhere, Category = "IndexActor")
 		UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere, Category = "IndexActor")
+		UTextRenderComponent* IndexText;
 
 protected:
 	// Called when the game starts or when spawned

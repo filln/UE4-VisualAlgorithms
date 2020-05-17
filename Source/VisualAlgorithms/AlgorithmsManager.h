@@ -6,14 +6,21 @@
 #include "GameFramework/Actor.h"
 #include "AlgorithmsManager.generated.h"
 
+class ADataAlgorithms;
+
 UCLASS()
 class VISUALALGORITHMS_API AAlgorithmsManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AAlgorithmsManager();
+
+	//Private variables.
+private:
+
+	bool bIsRunVisualization;
 
 	//Public UFUNCTION() functions.
 public:
@@ -24,12 +31,23 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AlgorithmsManager")
 		void RunVisualization();
 
+	UFUNCTION(BlueprintCallable, Category = "AlgorithmsManager")
+		bool GetbIsRunVisualization() const { return bIsRunVisualization; }
+	UFUNCTION(BlueprintCallable, Category = "AlgorithmsManager")
+		void SetbIsRunVisualization(bool bInIsRunVisualization) { bIsRunVisualization = bInIsRunVisualization; }
+
+	UFUNCTION(BlueprintCallable, Category = "AlgorithmsManager")
+		ADataAlgorithms* GetDataAlgorithms() const;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+public:
+
 
 };

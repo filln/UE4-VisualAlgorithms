@@ -8,28 +8,32 @@
 
 class UBoxComponent;
 class UStaticMeshComponent;
+class UTextRenderComponent;
+
 
 UCLASS()
 class VISUALALGORITHMS_API AValueActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AValueActor();
 
 public:
 
-	UPROPERTY(EditDefaultsOnly, Category = "ValueActor")
-	UBoxComponent* BoxCollision;
-	UPROPERTY(EditDefaultsOnly, Category = "ValueActor")
-	UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere, Category = "ValueActor")
+		UBoxComponent* BoxCollision;
+	UPROPERTY(VisibleAnywhere, Category = "ValueActor")
+		UStaticMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere, Category = "ValueActor")
+		UTextRenderComponent* ValueText;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

@@ -4,6 +4,7 @@
 #include "IndexActor.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/TextRenderComponent.h"
 
 // Sets default values
 AIndexActor::AIndexActor()
@@ -11,10 +12,15 @@ AIndexActor::AIndexActor()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
-	SetRootComponent(BoxCollision);
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
+	SetRootComponent(Mesh);
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	BoxCollision->SetupAttachment(GetRootComponent());
+
+	IndexText = CreateDefaultSubobject<UTextRenderComponent>(TEXT("IndexText"));
+	IndexText->SetupAttachment(GetRootComponent());
+	IndexText->SetText(FText::FromString(TEXT("0")));
 
 }
 
