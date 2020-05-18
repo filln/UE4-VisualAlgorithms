@@ -4,6 +4,10 @@
 #include "AlgorithmsManager.h"
 #include "VisualAlgorithmsGameModeBase.h"
 #include "DataAlgorithms.h"
+#include "SortingArrayBuilder.h"
+#include "IndexActor.h"
+#include "ValueActor.h"
+#include "TimerManager.h"
 
 // Sets default values
 AAlgorithmsManager::AAlgorithmsManager()
@@ -12,6 +16,11 @@ AAlgorithmsManager::AAlgorithmsManager()
 	PrimaryActorTick.bCanEverTick = false;
 
 	bIsRunVisualization = false;
+	TimeBetweenSwaps = 1.f;
+	TranslateTimerDeltaTime = 0.017f;
+	CurrentSwapsCount = 0;
+	MaxSwapsCount = 0;
+	SpeedOfTranslate = 10.f;
 
 }
 
@@ -28,14 +37,10 @@ void AAlgorithmsManager::RunVisualization()
 {
 	SetbIsRunVisualization(true);
 
+	CurrentSwapsCount = 0;
+	MaxSwapsCount = GetDataAlgorithms()->SwapStructArr.Num();
+	GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, true);
 
-
-	ADataAlgorithms* DataAlgorithms = GetDataAlgorithms();
-	if (DataAlgorithms)
-	{
-		DataAlgorithms->ClearSwapData();
-	}
-	SetbIsRunVisualization(false);
 	
 }
 
@@ -44,12 +49,92 @@ ADataAlgorithms* AAlgorithmsManager::GetDataAlgorithms() const
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
 	if (GameMode)
 	{
-		return GameMode->GetDataAlgorithms();
+		ADataAlgorithms* DataAlgorithms = GameMode->GetDataAlgorithms();
+		if (DataAlgorithms)
+		{
+			return DataAlgorithms;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("VisualAlgorithms: GetDataAlgorithms(): return nullptr."));
+			return nullptr;
+		}
 	}
 	else
 	{
+		UE_LOG(LogTemp, Warning, TEXT("VisualAlgorithms: GetDataAlgorithms(): return nullptr."));
 		return nullptr;
 	}
+}
+
+ASortingArrayBuilder* AAlgorithmsManager::GetSortingArrayBuilder() const
+{
+	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
+	if (GameMode)
+	{
+		ASortingArrayBuilder* SortingArrayBuilder = GameMode->GetSortingArrayBuilder();
+		if (SortingArrayBuilder)
+		{
+			return SortingArrayBuilder;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("VisualAlgorithms: GetSortingArrayBuilder(): return nullptr."));
+			return nullptr;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("VisualAlgorithms: GetSortingArrayBuilder(): return nullptr."));
+		return nullptr;
+	}
+}
+
+void AAlgorithmsManager::SwapValueActors()
+{
+	CurrentSwapsCount++;
+	if (CurrentSwapsCount > MaxSwapsCount)
+	{
+		SetbIsRunVisualization(false);
+		GetDataAlgorithms()->ClearSwapData();
+		GetWorldTimerManager().ClearTimer(SwapTimer);
+
+		return;
+	}
+
+	int32 Index1 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount - 1].Index1;
+	int32 Index2 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount - 1].Index2;
+
+	CurrentValueActor1 = GetSortingArrayBuilder()->ValueActorsArray[Index1];
+	CurrentValueActor2 = GetSortingArrayBuilder()->ValueActorsArray[Index2];
+
+	AIndexActor* CurrentIndexActor1 = GetSortingArrayBuilder()->IndexActorsArray[Index1];
+	AIndexActor* CurrentIndexActor2 = GetSortingArrayBuilder()->IndexActorsArray[Index2];
+
+	EndLocationCurrentValueActor1 = CurrentIndexActor2->GetActorLocation();
+	EndLocationCurrentValueActor2 = CurrentIndexActor1->GetActorLocation();
+
+	GetWorldTimerManager().PauseTimer(SwapTimer);
+	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AAlgorithmsManager::TranslateValueActors, TranslateTimerDeltaTime, true);
+
+	GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
+
+}
+
+void AAlgorithmsManager::TranslateValueActors()
+{
+	if (
+		CurrentValueActor1->GetActorLocation() == EndLocationCurrentValueActor1
+		&& CurrentValueActor2->GetActorLocation() == EndLocationCurrentValueActor2
+		)
+	{
+		GetWorldTimerManager().ClearTimer(TranslateTimer);
+		GetWorldTimerManager().UnPauseTimer(SwapTimer);
+
+		return;
+	}
+
+
 }
 
 // Called when the game starts or when spawned
