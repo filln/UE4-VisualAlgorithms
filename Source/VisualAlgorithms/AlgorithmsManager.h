@@ -29,9 +29,6 @@ public:
 		float TranslateTimerDeltaTime;
 	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
 		float TimeDurationOfSwap;
-	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
-		float SpeedOfTranslate;
-
 
 	//Private variables.
 private:
@@ -45,6 +42,8 @@ private:
 	AValueActor* CurrentValueActor2;
 	FVector EndLocationCurrentValueActor1;
 	FVector EndLocationCurrentValueActor2;
+	FVector DeltaTranslationValueActor1;
+	FVector DeltaTranslationValueActor2;
 
 	//Public UFUNCTION() functions.
 public:
