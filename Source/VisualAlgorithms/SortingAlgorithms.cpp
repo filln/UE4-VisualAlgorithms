@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
 
 #include "SortingAlgorithms.h"
@@ -62,6 +62,25 @@ void ASortingAlgorithms::ShuffleArray(TArray<int32>& Arr)
 void ASortingAlgorithms::BubbleSort(TArray<int32>& Arr)
 {
 
+	size_t lastIndex = Arr.Num() - 1;
+
+	bool isSwap = true;
+	while (isSwap)
+	{
+		isSwap = false;
+		for (size_t index = 0; index < lastIndex; index++)
+		{
+			if (Arr[index] > Arr[index + 1])
+			{
+				Arr.Swap(index, index + 1);
+				isSwap = true;
+
+				WriteSwapData(index, index + 1);
+			}
+		}
+		lastIndex--;
+	}
+
 }
 
 ADataAlgorithms* ASortingAlgorithms::GetDataAlgorithms() const
@@ -90,7 +109,7 @@ void ASortingAlgorithms::WriteSwapData(int32 Index1, int32 Index2)
 void ASortingAlgorithms::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

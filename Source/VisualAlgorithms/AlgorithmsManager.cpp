@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
 
 #include "AlgorithmsManager.h"
@@ -39,7 +39,8 @@ void AAlgorithmsManager::RunVisualization()
 
 	CurrentSwapsCount = 0;
 	MaxSwapsCount = GetDataAlgorithms()->SwapStructArr.Num();
-	GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, false);
+	//GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, false);
+	SwapValueActors();
 
 
 }
@@ -114,7 +115,11 @@ void AAlgorithmsManager::SwapValueActors()
 	EndLocationCurrentValueActor1 = CurrentIndexActor2->GetActorLocation();
 	EndLocationCurrentValueActor2 = CurrentIndexActor1->GetActorLocation();
 
-	float CountOfIteration = TimeDurationOfSwap / TranslateTimerDeltaTime;
+	CountOfIteration = TimeDurationOfSwap / TranslateTimerDeltaTime;
+	CountOfIterationInt = static_cast<size_t>(CountOfIteration);
+	CurrentCountOfIteration = 0;
+	
+	
 	int32 CountOfInterval = Index1 - Index2;
 	if (CountOfInterval < 0)
 	{
@@ -133,9 +138,8 @@ void AAlgorithmsManager::SwapValueActors()
 		DeltaTranslationValueActor2 = DeltaTranslation * -1.f;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("EndLocationCurrentValueActor1 is %s."), *EndLocationCurrentValueActor1.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("EndLocationCurrentValueActor1 is %s."), *EndLocationCurrentValueActor1.ToString());
 
-	GetWorldTimerManager().ClearTimer(SwapTimer);
 	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AAlgorithmsManager::TranslateValueActors, TranslateTimerDeltaTime, true);
 
 	GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
@@ -144,24 +148,21 @@ void AAlgorithmsManager::SwapValueActors()
 
 void AAlgorithmsManager::TranslateValueActors()
 {
-	FVector NextLocationCurrentValueActor1 = CurrentValueActor1->GetActorLocation() + DeltaTranslationValueActor1;
-	FVector NextLocationCurrentValueActor2 = CurrentValueActor2->GetActorLocation() + DeltaTranslationValueActor2;
-	UE_LOG(LogTemp, Warning, TEXT("NextLocationCurrentValueActor1 is %s."), *NextLocationCurrentValueActor1.ToString());
+	CurrentCountOfIteration++;
 
-	if (
-		NextLocationCurrentValueActor1 == EndLocationCurrentValueActor1
-		|| NextLocationCurrentValueActor2 == EndLocationCurrentValueActor2
-		)
+	if (CurrentCountOfIteration == (CountOfIterationInt - 1))
 	{
 		CurrentValueActor1->SetActorLocation(EndLocationCurrentValueActor1);
 		CurrentValueActor2->SetActorLocation(EndLocationCurrentValueActor2);
 
 		GetWorldTimerManager().ClearTimer(TranslateTimer);
-		GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, true, TimeBetweenSwaps);
+		GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, false, TimeBetweenSwaps);
 
 		return;
 	}
 
+	FVector NextLocationCurrentValueActor1 = CurrentValueActor1->GetActorLocation() + DeltaTranslationValueActor1;
+	FVector NextLocationCurrentValueActor2 = CurrentValueActor2->GetActorLocation() + DeltaTranslationValueActor2;
 	CurrentValueActor1->SetActorLocation(NextLocationCurrentValueActor1);
 	CurrentValueActor2->SetActorLocation(NextLocationCurrentValueActor2);
 

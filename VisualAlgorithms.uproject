@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"EngineAssociation": "4.22",
 	"Category": "",
-	"Description": "",
+	"Description": "Copyright 2020 Anatoli Kucharau. All Rights Reserved.",
 	"Modules": [
 		{
 			"Name": "VisualAlgorithms",

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
 #pragma once
 
@@ -44,6 +44,11 @@ private:
 	FVector EndLocationCurrentValueActor2;
 	FVector DeltaTranslationValueActor1;
 	FVector DeltaTranslationValueActor2;
+
+	float CountOfIteration;
+	size_t CountOfIterationInt;
+	size_t CurrentCountOfIteration;
+		
 
 	//Public UFUNCTION() functions.
 public:
