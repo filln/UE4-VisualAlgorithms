@@ -11,6 +11,34 @@ class ASortingArrayBuilder;
 class AIndexActor;
 class AValueActor;
 
+UENUM(BlueprintType, Category = "AlgorithmsManager")
+enum class EAxisStateValueActor1 : uint8
+{
+	//
+	EAS_CalculateX	UMETA(DisplayName = "CalculateX"),
+
+	//
+	EAS_CalculateY	UMETA(DisplayName = "CalculateY"),
+
+	//
+	EAS_CalculateZ	UMETA(DisplayName = "CalculateZ"),
+
+};
+
+UENUM(BlueprintType, Category = "AlgorithmsManager")
+enum class EAxisStateValueActor2 : uint8
+{
+	//
+	EAS_CalculateX	UMETA(DisplayName = "CalculateX"),
+
+	//
+	EAS_CalculateY	UMETA(DisplayName = "CalculateY"),
+
+	//
+	EAS_CalculateZ	UMETA(DisplayName = "CalculateZ"),
+
+};
+
 UCLASS()
 class VISUALALGORITHMS_API AAlgorithmsManager : public AActor
 {
@@ -29,6 +57,24 @@ public:
 		float TranslateTimerDeltaTime;
 	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
 		float TimeDurationOfSwap;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		bool bIsArc;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		float AxisXValueActor1;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		float AxisYValueActor1;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		float AxisZValueActor1;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		float AxisXValueActor2;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		float AxisYValueActor2;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		float AxisZValueActor2;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		EAxisStateValueActor1 AxisStateValueActor1;
+	UPROPERTY(EditDefaultsOnly, Category = "AlgorithmsManager")
+		EAxisStateValueActor2 AxisStateValueActor2;
 
 	//Private variables.
 private:
@@ -38,17 +84,25 @@ private:
 	FTimerHandle TranslateTimer;
 	size_t CurrentSwapsCount;
 	size_t MaxSwapsCount;
-	AValueActor* CurrentValueActor1;
-	AValueActor* CurrentValueActor2;
-	FVector EndLocationCurrentValueActor1;
-	FVector EndLocationCurrentValueActor2;
+	AValueActor* ValueActor1;
+	AValueActor* ValueActor2;
+	FVector EndLocationValueActor1;
+	FVector EndLocationValueActor2;
 	FVector DeltaTranslationValueActor1;
 	FVector DeltaTranslationValueActor2;
 
 	float CountOfIteration;
 	size_t CountOfIterationInt;
 	size_t CurrentCountOfIteration;
-		
+
+	float DeltaDegreesValueActor1;
+	float DeltaDegreesValueActor2;
+	FVector AxisValueActor1;
+	FVector AxisValueActor2;
+
+	FVector VectorBetweenCenterAndValueActor1;
+	FVector VectorBetweenCenterAndValueActor2;
+	FVector CenterLocation;
 
 	//Public UFUNCTION() functions.
 public:
@@ -73,6 +127,8 @@ private:
 
 	void SwapValueActors();
 	void TranslateValueActors();
+	void SwapValueActorsArc();
+	void TranslateValueActorsArc();
 
 protected:
 	// Called when the game starts or when spawned
