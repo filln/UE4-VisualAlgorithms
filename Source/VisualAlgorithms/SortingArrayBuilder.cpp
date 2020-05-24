@@ -15,7 +15,7 @@ ASortingArrayBuilder::ASortingArrayBuilder()
 
 	CountOfElements = 10;
 	BeginLocation = FVector(0.f);
-	DeltaLocation = FVector(0.f, 100.f, 0.f);
+	DeltaLocation = FVector(0.f, 100.f, 5.f);
 
 	IndexActorClass = AIndexActor::StaticClass();
 	ValueActorClass = AValueActor::StaticClass();

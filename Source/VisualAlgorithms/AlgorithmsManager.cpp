@@ -22,14 +22,14 @@ AAlgorithmsManager::AAlgorithmsManager()
 	MaxSwapsCount = 0;
 	TimeDurationOfSwap = 1.f;
 	bIsArc = true;
-	AxisXValueActor1 = -1.0f;
+	AxisXValueActor1 = -30.0f;
 	AxisYValueActor1 = -1.0f;
 	AxisZValueActor1 = -1.0f;
-	AxisXValueActor2 = -1.0f;
-	AxisYValueActor2 = -1.0f;
+	AxisXValueActor2 = -30.0f;
+	AxisYValueActor2 = 1.0f;
 	AxisZValueActor2 = 1.0f;
-	AxisStateValueActor1 = EAxisStateValueActor1::EAS_CalculateY;
-	AxisStateValueActor2 = EAxisStateValueActor2::EAS_CalculateY;
+	AxisStateValueActor1 = EAxisStateValueActor1::EAS_CalculateZ;
+	AxisStateValueActor2 = EAxisStateValueActor2::EAS_CalculateZ;
 
 }
 
@@ -48,15 +48,8 @@ void AAlgorithmsManager::RunVisualization()
 
 	CurrentSwapsCount = 0;
 	MaxSwapsCount = GetDataAlgorithms()->SwapStructArr.Num();
-	if (bIsArc)
-	{
-		SwapValueActorsArc();
-	}
-	else
-	{
-		SwapValueActors();
-	}
 
+	SwapValueActors();
 
 }
 
@@ -109,83 +102,8 @@ ASortingArrayBuilder* AAlgorithmsManager::GetSortingArrayBuilder() const
 void AAlgorithmsManager::SwapValueActors()
 {
 	CurrentSwapsCount++;
-	if (CurrentSwapsCount > MaxSwapsCount)
-	{
-		SetbIsRunVisualization(false);
-		GetDataAlgorithms()->ClearSwapData();
-		GetWorldTimerManager().ClearTimer(SwapTimer);
 
-		return;
-	}
-
-	int32 Index1 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount - 1].Index1;
-	int32 Index2 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount - 1].Index2;
-
-	ValueActor1 = GetSortingArrayBuilder()->ValueActorsArray[Index1];
-	ValueActor2 = GetSortingArrayBuilder()->ValueActorsArray[Index2];
-
-	AIndexActor* CurrentIndexActor1 = GetSortingArrayBuilder()->IndexActorsArray[Index1];
-	AIndexActor* CurrentIndexActor2 = GetSortingArrayBuilder()->IndexActorsArray[Index2];
-
-	EndLocationValueActor1 = CurrentIndexActor2->GetActorLocation();
-	EndLocationValueActor2 = CurrentIndexActor1->GetActorLocation();
-
-	CountOfIteration = TimeDurationOfSwap / TranslateTimerDeltaTime;
-	CountOfIterationInt = static_cast<size_t>(CountOfIteration);
-	CurrentCountOfIteration = 0;
-	
-	
-	int32 CountOfInterval = Index1 - Index2;
-	if (CountOfInterval < 0)
-	{
-		CountOfInterval *= -1;
-	}
-	FVector DeltaTranslation = (GetSortingArrayBuilder()->DeltaLocation / CountOfIteration) * CountOfInterval;
-
-	if (Index1 > Index2)
-	{
-		DeltaTranslationValueActor1 = DeltaTranslation * -1.f;
-		DeltaTranslationValueActor2 = DeltaTranslation;
-	}
-	if (Index2 > Index1)
-	{
-		DeltaTranslationValueActor1 = DeltaTranslation;
-		DeltaTranslationValueActor2 = DeltaTranslation * -1.f;
-	}
-
-	//UE_LOG(LogTemp, Warning, TEXT("EndLocationCurrentValueActor1 is %s."), *EndLocationCurrentValueActor1.ToString());
-
-	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AAlgorithmsManager::TranslateValueActors, TranslateTimerDeltaTime, true);
-
-	GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
-
-}
-
-void AAlgorithmsManager::TranslateValueActors()
-{
-	CurrentCountOfIteration++;
-
-	if (CurrentCountOfIteration == (CountOfIterationInt - 1))
-	{
-		ValueActor1->SetActorLocation(EndLocationValueActor1);
-		ValueActor2->SetActorLocation(EndLocationValueActor2);
-
-		GetWorldTimerManager().ClearTimer(TranslateTimer);
-		GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, false, TimeBetweenSwaps);
-
-		return;
-	}
-
-	FVector NextLocationCurrentValueActor1 = ValueActor1->GetActorLocation() + DeltaTranslationValueActor1;
-	FVector NextLocationCurrentValueActor2 = ValueActor2->GetActorLocation() + DeltaTranslationValueActor2;
-	ValueActor1->SetActorLocation(NextLocationCurrentValueActor1);
-	ValueActor2->SetActorLocation(NextLocationCurrentValueActor2);
-
-}
-
-void AAlgorithmsManager::SwapValueActorsArc()
-{
-	CurrentSwapsCount++;
+	//Stop exchange if all exchanges was done.
 	if (CurrentSwapsCount > MaxSwapsCount)
 	{
 		SetbIsRunVisualization(false);
@@ -206,38 +124,61 @@ void AAlgorithmsManager::SwapValueActorsArc()
 
 	EndLocationValueActor1 = IndexActor2->GetActorLocation();
 	EndLocationValueActor2 = IndexActor1->GetActorLocation();
+
+	//Start point of actor translate.
 	FVector StartLocationValueActor1 = ValueActor1->GetActorLocation();
+	//Start point of actor translate.
 	FVector StartLocationValueActor2 = ValueActor2->GetActorLocation();
 
+	//CountOfIteration corresponds to TimeDurationOfSwap and TranslateTimerDeltaTime.
 	CountOfIteration = TimeDurationOfSwap / TranslateTimerDeltaTime;
 	CountOfIterationInt = static_cast<size_t>(CountOfIteration);
 	CurrentCountOfIteration = 0;
 
 
 	int32 CountOfInterval = Index1 - Index2;
+
+	//Set CountOfInterval positive.
 	if (CountOfInterval < 0)
 	{
 		CountOfInterval *= -1;
 	}
+
+	//The vector that actors translate every TranslateTimer tick.
+	FVector DeltaTranslation = (GetSortingArrayBuilder()->DeltaLocation / CountOfIteration) * CountOfInterval;
+
+	//The angle that actors translate every TranslateTimer tick.
 	float DeltaDegrees = 180 / CountOfIteration;
 
+	//The vector between ValueActor1 and ValueActor2.
 	FVector VectorBetweenValueActors = StartLocationValueActor2 - StartLocationValueActor1;
 	VectorBetweenCenterAndValueActor2 = VectorBetweenValueActors - VectorBetweenValueActors / 2;
 	VectorBetweenCenterAndValueActor1 = -VectorBetweenCenterAndValueActor2;
 	CenterLocation = StartLocationValueActor2 - VectorBetweenCenterAndValueActor2;
 
+	//This block change direction of translation of actors.
 	if (Index1 > Index2)
 	{
+		DeltaTranslationValueActor1 = DeltaTranslation * -1.f;
+		DeltaTranslationValueActor2 = DeltaTranslation;
+
 		DeltaDegreesValueActor1 = DeltaDegrees * -1.f;
 		DeltaDegreesValueActor2 = DeltaDegrees;
 	}
 	if (Index2 > Index1)
 	{
+		DeltaTranslationValueActor1 = DeltaTranslation;
+		DeltaTranslationValueActor2 = DeltaTranslation * -1.f;
+
 		DeltaDegreesValueActor1 = DeltaDegrees;
 		DeltaDegreesValueActor2 = DeltaDegrees * -1.f;
 	}
 
-
+	/*
+	This block calculate Axis around that actors rotation depend to vector between CenterLocation and current actor 
+	and depend to defenition of two cordinates of this Axis.
+	Ax*Bx + Ay*By + Az*Bz = 0 for perpendicular vectors.
+	*/
 	switch (AxisStateValueActor1)
 	{
 	case EAxisStateValueActor1::EAS_CalculateX:
@@ -258,7 +199,6 @@ void AAlgorithmsManager::SwapValueActorsArc()
 	default:
 		break;
 	}
-
 	switch (AxisStateValueActor2)
 	{
 	case EAxisStateValueActor2::EAS_CalculateX:
@@ -285,33 +225,50 @@ void AAlgorithmsManager::SwapValueActorsArc()
 
 	//UE_LOG(LogTemp, Warning, TEXT("EndLocationCurrentValueActor1 is %s."), *EndLocationCurrentValueActor1.ToString());
 
-	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AAlgorithmsManager::TranslateValueActorsArc, TranslateTimerDeltaTime, true);
-
 	GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
+
+	//Go translate actors!
+	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AAlgorithmsManager::TranslateValueActors, TranslateTimerDeltaTime, true);
+
+
 }
 
-void AAlgorithmsManager::TranslateValueActorsArc()
+void AAlgorithmsManager::TranslateValueActors()
 {
 	CurrentCountOfIteration++;
 
-	if (CurrentCountOfIteration == (CountOfIterationInt - 1))
+	//If used all iteration than correct finish point and start exchange next actors.
+	if (CurrentCountOfIteration == CountOfIterationInt)
 	{
 		ValueActor1->SetActorLocation(EndLocationValueActor1);
 		ValueActor2->SetActorLocation(EndLocationValueActor2);
 
 		GetWorldTimerManager().ClearTimer(TranslateTimer);
-		GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActorsArc, TimeBetweenSwaps, false, TimeBetweenSwaps);
+		GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, false, TimeBetweenSwaps);
 
 		return;
 	}
 
-	VectorBetweenCenterAndValueActor1 = VectorBetweenCenterAndValueActor1.RotateAngleAxis(DeltaDegreesValueActor1, AxisValueActor1);
-	VectorBetweenCenterAndValueActor2 = VectorBetweenCenterAndValueActor2.RotateAngleAxis(DeltaDegreesValueActor2, AxisValueActor2);
-	FVector NewLocationValueActor1 = CenterLocation + VectorBetweenCenterAndValueActor1;
-	FVector NewLocationValueActor2 = CenterLocation + VectorBetweenCenterAndValueActor2;
+	FVector NextLocationValueActor1;
+	FVector NextLocationValueActor2;
 
-	ValueActor1->SetActorLocation(NewLocationValueActor1);
-	ValueActor2->SetActorLocation(NewLocationValueActor2);
+	//If true than calculate arc. Else calculate line.
+	if (bIsArc)
+	{
+		VectorBetweenCenterAndValueActor1 = VectorBetweenCenterAndValueActor1.RotateAngleAxis(DeltaDegreesValueActor1, AxisValueActor1);
+		VectorBetweenCenterAndValueActor2 = VectorBetweenCenterAndValueActor2.RotateAngleAxis(DeltaDegreesValueActor2, AxisValueActor2);
+		NextLocationValueActor1 = CenterLocation + VectorBetweenCenterAndValueActor1;
+		NextLocationValueActor2 = CenterLocation + VectorBetweenCenterAndValueActor2;
+	}
+	else
+	{
+		NextLocationValueActor1 = ValueActor1->GetActorLocation() + DeltaTranslationValueActor1;
+		NextLocationValueActor2 = ValueActor2->GetActorLocation() + DeltaTranslationValueActor2;
+	}
+
+	ValueActor1->SetActorLocation(NextLocationValueActor1);
+	ValueActor2->SetActorLocation(NextLocationValueActor2);
+
 }
 
 // Called when the game starts or when spawned
