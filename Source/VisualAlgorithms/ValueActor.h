@@ -1,5 +1,10 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
+/*
+The actor is visual representation value of the SortingArray.
+Pivot of the Mesh must be underneath for superposition IndexActor and ValueActor.
+*/
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -24,8 +29,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "ValueActor")
 		UBoxComponent* BoxCollision;
+
+	//It's the visual representation of the value. Pivot of the Mesh must be underneath for superposition IndexActor and ValueActor.
 	UPROPERTY(VisibleAnywhere, Category = "ValueActor")
 		UStaticMeshComponent* Mesh;
+
+	//This text show value of the SortingArray.
 	UPROPERTY(VisibleAnywhere, Category = "ValueActor")
 		UTextRenderComponent* ValueText;
 

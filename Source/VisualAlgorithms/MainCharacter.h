@@ -1,5 +1,9 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
+/*
+With this character you can run of algorithms and visualization.
+*/
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,7 +11,7 @@
 #include "MainCharacter.generated.h"
 
 class ASortingAlgorithms;
-class AAlgorithmsManager;
+class AVisualizationManager;
 class ASortingArrayBuilder;
 class ADataAlgorithms;
 UCLASS()
@@ -25,7 +29,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
 		ASortingAlgorithms* GetSortingAlgorithms() const;
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
-		AAlgorithmsManager* GetAlgorithmsManager() const;
+		AVisualizationManager* GetVisualizationManager() const;
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
 		ASortingArrayBuilder* GetSortingArrayBuilder() const;
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")

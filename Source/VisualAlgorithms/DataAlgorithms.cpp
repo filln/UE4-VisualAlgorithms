@@ -23,6 +23,7 @@ void ADataAlgorithms::SetReferenceToThis()
 
 void ADataAlgorithms::WriteSwapData(int32 Index1, int32 Index2)
 {
+	//Create struct and add it to array.
 	FSwapStruct SwapStruct;
 	SwapStruct.Index1 = Index1;
 	SwapStruct.Index2 = Index2;

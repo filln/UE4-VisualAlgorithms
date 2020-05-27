@@ -1,7 +1,7 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
 
-#include "AlgorithmsManager.h"
+#include "VisualizationManager.h"
 #include "VisualAlgorithmsGameModeBase.h"
 #include "DataAlgorithms.h"
 #include "SortingArrayBuilder.h"
@@ -10,7 +10,7 @@
 #include "TimerManager.h"
 
 // Sets default values
-AAlgorithmsManager::AAlgorithmsManager()
+AVisualizationManager::AVisualizationManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -33,16 +33,16 @@ AAlgorithmsManager::AAlgorithmsManager()
 
 }
 
-void AAlgorithmsManager::SetReferenceToThis()
+void AVisualizationManager::SetReferenceToThis()
 {
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
 	if (GameMode)
 	{
-		GameMode->SetAlgorithmsManager(this);
+		GameMode->SetVisualizationManager(this);
 	}
 }
 
-void AAlgorithmsManager::RunVisualization()
+void AVisualizationManager::RunVisualization()
 {
 	SetbIsRunVisualization(true);
 
@@ -53,7 +53,7 @@ void AAlgorithmsManager::RunVisualization()
 
 }
 
-ADataAlgorithms* AAlgorithmsManager::GetDataAlgorithms() const
+ADataAlgorithms* AVisualizationManager::GetDataAlgorithms() const
 {
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
 	if (GameMode)
@@ -76,7 +76,7 @@ ADataAlgorithms* AAlgorithmsManager::GetDataAlgorithms() const
 	}
 }
 
-ASortingArrayBuilder* AAlgorithmsManager::GetSortingArrayBuilder() const
+ASortingArrayBuilder* AVisualizationManager::GetSortingArrayBuilder() const
 {
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
 	if (GameMode)
@@ -99,7 +99,7 @@ ASortingArrayBuilder* AAlgorithmsManager::GetSortingArrayBuilder() const
 	}
 }
 
-void AAlgorithmsManager::SwapValueActors()
+void AVisualizationManager::SwapValueActors()
 {
 	CurrentSwapsCount++;
 
@@ -228,12 +228,12 @@ void AAlgorithmsManager::SwapValueActors()
 	GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
 
 	//Go translate actors!
-	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AAlgorithmsManager::TranslateValueActors, TranslateTimerDeltaTime, true);
+	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AVisualizationManager::TranslateValueActors, TranslateTimerDeltaTime, true);
 
 
 }
 
-void AAlgorithmsManager::TranslateValueActors()
+void AVisualizationManager::TranslateValueActors()
 {
 	CurrentCountOfIteration++;
 
@@ -244,7 +244,7 @@ void AAlgorithmsManager::TranslateValueActors()
 		ValueActor2->SetActorLocation(EndLocationValueActor2);
 
 		GetWorldTimerManager().ClearTimer(TranslateTimer);
-		GetWorldTimerManager().SetTimer(SwapTimer, this, &AAlgorithmsManager::SwapValueActors, TimeBetweenSwaps, false, TimeBetweenSwaps);
+		GetWorldTimerManager().SetTimer(SwapTimer, this, &AVisualizationManager::SwapValueActors, TimeBetweenSwaps, false, TimeBetweenSwaps);
 
 		return;
 	}
@@ -272,14 +272,14 @@ void AAlgorithmsManager::TranslateValueActors()
 }
 
 // Called when the game starts or when spawned
-void AAlgorithmsManager::BeginPlay()
+void AVisualizationManager::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
 
 // Called every frame
-void AAlgorithmsManager::Tick(float DeltaTime)
+void AVisualizationManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

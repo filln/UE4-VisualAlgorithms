@@ -3,7 +3,7 @@
 
 #include "MainCharacter.h"
 #include "SortingAlgorithms.h"
-#include "AlgorithmsManager.h"
+#include "VisualizationManager.h"
 #include "SortingArrayBuilder.h"
 #include "DataAlgorithms.h"
 #include "VisualAlgorithmsGameModeBase.h"
@@ -29,12 +29,12 @@ ASortingAlgorithms* AMainCharacter::GetSortingAlgorithms() const
 	}
 }
 
-AAlgorithmsManager* AMainCharacter::GetAlgorithmsManager() const
+AVisualizationManager* AMainCharacter::GetVisualizationManager() const
 {
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
 	if (GameMode)
 	{
-		return GameMode->GetAlgorithmsManager();
+		return GameMode->GetVisualizationManager();
 	}
 	else
 	{

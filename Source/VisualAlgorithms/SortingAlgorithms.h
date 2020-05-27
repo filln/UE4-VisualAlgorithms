@@ -1,5 +1,9 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
+/* 
+This class contains algorithms (shuffle, sorting etc.) and methods that save events in these algorithms.
+*/
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -20,6 +24,7 @@ public:
 	//Public UFUNCTION() functions.
 public:
 
+	//Set reference to this in the GameMode.
 	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
 		void SetReferenceToThis();
 
@@ -29,6 +34,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
 		void BubbleSort(UPARAM(ref) TArray<int32>& Arr);
 
+	//Save data of exchange to SwapStructArr in DataAlgotithms.
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
 		void WriteSwapData(int32 Index1, int32 Index2);
 

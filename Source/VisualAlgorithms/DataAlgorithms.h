@@ -1,5 +1,9 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
+/*
+The class that saves and manages data of events in algorithms.
+*/
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -7,6 +11,7 @@
 #include "DataAlgorithms.generated.h"
 
 
+//This structure saves indexes of values that exchange.
 USTRUCT(BlueprintType)
 struct FSwapStruct
 {
@@ -28,6 +33,7 @@ public:
 	//Public UPROPERTY() variables.
 public:
 
+	//The array keeps structures FSwapStruct.
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "DataAlgorithms")
 		TArray<FSwapStruct> SwapStructArr;
 
@@ -35,11 +41,15 @@ public:
 
 public:
 
+	//Set reference to this in the GameMode.
 	UFUNCTION(BlueprintCallable, Category = "DataAlgorithms")
 		void SetReferenceToThis();
 
+	//Save information about exchange.
 	UFUNCTION(BlueprintCallable, Category = "DataAlgorithms")
 		void WriteSwapData(int32 Index1, int32 Index2);
+
+	//Clear information about all exchanges.
 	UFUNCTION(BlueprintCallable, Category = "DataAlgorithms")
 		void ClearSwapData();
 

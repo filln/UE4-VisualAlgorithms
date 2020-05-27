@@ -41,6 +41,8 @@ void ASortingArrayBuilder::BuildVisibleArray()
 	SpawnParam.Owner = this;
 	SpawnParam.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+
+	//This block spawn actors, save its index and value in SortingArray to tag, fill visible index or value (UTextRenderComponent), add spawned actor to array.
 	for (size_t index = 0; index < SortingArray.Num(); index++)
 	{
 		AIndexActor* CurrentIndexActor = GetWorld()->SpawnActor<AIndexActor>(IndexActorClass, SpawnLocation, FRotator(0.f), SpawnParam);

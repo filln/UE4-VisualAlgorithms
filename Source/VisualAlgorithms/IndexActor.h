@@ -1,5 +1,11 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
+/*
+The actor is a platform for ValueActor. Show in scene index of ValueActor in SortingArray.
+Pivot of the Mesh must be above for superposition IndexActor and ValueActor.
+
+*/
+
 #pragma once
 
 #include "CoreMinimal.h"
@@ -23,8 +29,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "IndexActor")
 		UBoxComponent* BoxCollision;
+
+	//The platform for ValueActor. Pivot of the Mesh must be above for superposition IndexActor and ValueActor.
 	UPROPERTY(VisibleAnywhere, Category = "IndexActor")
 		UStaticMeshComponent* Mesh;
+
+	//This text show index of SortingArray.
 	UPROPERTY(VisibleAnywhere, Category = "IndexActor")
 		UTextRenderComponent* IndexText;
 

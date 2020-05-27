@@ -7,23 +7,23 @@
 #include "VisualAlgorithmsGameModeBase.generated.h"
 
 class ASortingArrayBuilder;
-class AAlgorithmsManager;
+class AVisualizationManager;
 class ADataAlgorithms;
 class ASortingAlgorithms;
 
 /**
- * 
+ *
  */
 UCLASS()
 class VISUALALGORITHMS_API AVisualAlgorithmsGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 		//Private variables.
 private:
 
 	ASortingArrayBuilder* SortingArrayBuilder;
-	AAlgorithmsManager* AlgorithmsManager;
+	AVisualizationManager* VisualizationManager;
 	ADataAlgorithms* DataAlgorithms;
 	ASortingAlgorithms* SortingAlgorithms;
 
@@ -37,9 +37,9 @@ public:
 		ASortingArrayBuilder* GetSortingArrayBuilder() const { return SortingArrayBuilder; }
 
 	UFUNCTION(BlueprintCallable, Category = "OutsideReverences")
-		void SetAlgorithmsManager(AAlgorithmsManager* InAlgorithmsManager) { AlgorithmsManager = InAlgorithmsManager; }
+		void SetVisualizationManager(AVisualizationManager* InVisualizationManager) { VisualizationManager = InVisualizationManager; }
 	UFUNCTION(BlueprintCallable, Category = "OutsideReverences")
-		AAlgorithmsManager* GetAlgorithmsManager() const { return AlgorithmsManager; }
+		AVisualizationManager* GetVisualizationManager() const { return VisualizationManager; }
 
 	UFUNCTION(BlueprintCallable, Category = "OutsideReverences")
 		void SetDataAlgorithms(ADataAlgorithms* InDataAlgorithms) { DataAlgorithms = InDataAlgorithms; }
