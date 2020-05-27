@@ -84,42 +84,14 @@ public:
 	I.e. it is the axis of the vector of rotation of the actor.
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
-		float AxisXValueActor1;
+		FVector AxisValueActor1;
 
 	/*
 	To select a vector coordinate. This vector is normal for the actor rotation vector.
 	I.e. it is the axis of the vector of rotation of the actor.
 	*/
 	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
-		float AxisYValueActor1;
-
-	/*
-	To select a vector coordinate. This vector is normal for the actor rotation vector.
-	I.e. it is the axis of the vector of rotation of the actor.
-	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
-		float AxisZValueActor1;
-
-	/*
-	To select a vector coordinate. This vector is normal for the actor rotation vector.
-	I.e. it is the axis of the vector of rotation of the actor.
-	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
-		float AxisXValueActor2;
-
-	/*
-	To select a vector coordinate. This vector is normal for the actor rotation vector.
-	I.e. it is the axis of the vector of rotation of the actor.
-	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
-		float AxisYValueActor2;
-
-	/*
-	To select a vector coordinate. This vector is normal for the actor rotation vector.
-	I.e. it is the axis of the vector of rotation of the actor.
-	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
-		float AxisZValueActor2;
+		FVector AxisValueActor2;
 
 	/*
 	To select a vector coordinate that will be calculated. This vector is normal for the actor rotation vector.
@@ -185,12 +157,6 @@ private:
 
 	//The angle that actor translate every TranslateTimer tick.
 	float DeltaDegreesValueActor2;
-
-	//The axis around that actor rotations.
-	FVector AxisValueActor1;
-
-	//The axis around that actor rotations.
-	FVector AxisValueActor2;
 
 	//The vector between point that between two actors and this actor.
 	FVector VectorBetweenCenterAndValueActor1;

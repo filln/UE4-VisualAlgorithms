@@ -22,12 +22,8 @@ AVisualizationManager::AVisualizationManager()
 	MaxSwapsCount = 0;
 	TimeDurationOfSwap = 1.f;
 	bIsArc = true;
-	AxisXValueActor1 = -30.0f;
-	AxisYValueActor1 = -1.0f;
-	AxisZValueActor1 = -1.0f;
-	AxisXValueActor2 = -30.0f;
-	AxisYValueActor2 = 1.0f;
-	AxisZValueActor2 = 1.0f;
+	AxisValueActor1 = FVector(-30.0f, -1.0f, -1.0f);
+	AxisValueActor2 = FVector(-30.0f, 1.0f, 1.0f);
 	AxisStateValueActor1 = EAxisStateValueActor1::EAS_CalculateZ;
 	AxisStateValueActor2 = EAxisStateValueActor2::EAS_CalculateZ;
 
@@ -183,17 +179,11 @@ void AVisualizationManager::SwapValueActors()
 	{
 	case EAxisStateValueActor1::EAS_CalculateX:
 		AxisValueActor1.X = -(VectorBetweenCenterAndValueActor1.Y * AxisValueActor1.Y + VectorBetweenCenterAndValueActor1.Z * AxisValueActor1.Z) / VectorBetweenCenterAndValueActor1.X;
-		AxisValueActor1.Y = AxisYValueActor1;
-		AxisValueActor1.Z = AxisZValueActor1;
 		break;
 	case EAxisStateValueActor1::EAS_CalculateY:
-		AxisValueActor1.X = AxisXValueActor1;
 		AxisValueActor1.Y = -(VectorBetweenCenterAndValueActor1.X * AxisValueActor1.X + VectorBetweenCenterAndValueActor1.Z * AxisValueActor1.Z) / VectorBetweenCenterAndValueActor1.Y;
-		AxisValueActor1.Z = AxisZValueActor1;
 		break;
 	case EAxisStateValueActor1::EAS_CalculateZ:
-		AxisValueActor1.X = AxisXValueActor1;
-		AxisValueActor1.Y = AxisYValueActor1;
 		AxisValueActor1.Z = -(VectorBetweenCenterAndValueActor1.X * AxisValueActor1.X + VectorBetweenCenterAndValueActor1.Y * AxisValueActor1.Y) / VectorBetweenCenterAndValueActor1.Z;
 		break;
 	default:
@@ -203,17 +193,11 @@ void AVisualizationManager::SwapValueActors()
 	{
 	case EAxisStateValueActor2::EAS_CalculateX:
 		AxisValueActor2.X = -(VectorBetweenCenterAndValueActor2.Y * AxisValueActor2.Y + VectorBetweenCenterAndValueActor2.Z * AxisValueActor2.Z) / VectorBetweenCenterAndValueActor2.X;
-		AxisValueActor2.Y = AxisYValueActor2;
-		AxisValueActor2.Z = AxisZValueActor2;
 		break;
 	case EAxisStateValueActor2::EAS_CalculateY:
-		AxisValueActor2.X = AxisXValueActor2;
 		AxisValueActor2.Y = -(VectorBetweenCenterAndValueActor2.X * AxisValueActor2.X + VectorBetweenCenterAndValueActor2.Z * AxisValueActor2.Z) / VectorBetweenCenterAndValueActor2.Y;
-		AxisValueActor2.Z = AxisZValueActor2;
 		break;
 	case EAxisStateValueActor2::EAS_CalculateZ:
-		AxisValueActor2.X = AxisXValueActor2;
-		AxisValueActor2.Y = AxisYValueActor2;
 		AxisValueActor2.Z = -(VectorBetweenCenterAndValueActor2.X * AxisValueActor2.X + VectorBetweenCenterAndValueActor2.Y * AxisValueActor2.Y) / VectorBetweenCenterAndValueActor2.Z;
 		break;
 	default:
