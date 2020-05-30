@@ -49,6 +49,44 @@ void AVisualizationManager::RunVisualization()
 
 }
 
+void AVisualizationManager::FinishImmediately()
+{
+	if (!GetbIsRunVisualization())
+	{
+		return;
+	}
+
+	GetWorldTimerManager().ClearTimer(TranslateTimer);
+	GetWorldTimerManager().ClearTimer(SwapTimer);
+
+	//Translate the actors to its indexes.
+	for (CurrentSwapsCount; CurrentSwapsCount < MaxSwapsCount; CurrentSwapsCount++)
+	{
+		Index1 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount].Index1;
+		Index2 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount].Index2;
+
+		ValueActor1 = GetSortingArrayBuilder()->ValueActorsArray[Index1];
+		ValueActor2 = GetSortingArrayBuilder()->ValueActorsArray[Index2];
+
+		AIndexActor* IndexActor1 = GetSortingArrayBuilder()->IndexActorsArray[Index1];
+		AIndexActor* IndexActor2 = GetSortingArrayBuilder()->IndexActorsArray[Index2];
+
+		EndLocationValueActor1 = IndexActor2->GetActorLocation();
+		EndLocationValueActor2 = IndexActor1->GetActorLocation();
+
+		ValueActor1->SetActorLocation(EndLocationValueActor1);
+		ValueActor2->SetActorLocation(EndLocationValueActor2);
+
+		GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
+
+		//UE_LOG(LogTemp, Warning, TEXT("CurrentSwapsCount is %d."), CurrentSwapsCount);
+	}
+
+	SetbIsRunVisualization(false);
+	GetDataAlgorithms()->ClearSwapData();
+	CurrentSwapsCount = 0;
+}
+
 ADataAlgorithms* AVisualizationManager::GetDataAlgorithms() const
 {
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();
@@ -97,20 +135,9 @@ ASortingArrayBuilder* AVisualizationManager::GetSortingArrayBuilder() const
 
 void AVisualizationManager::SwapValueActors()
 {
-	CurrentSwapsCount++;
 
-	//Stop exchange if all exchanges was done.
-	if (CurrentSwapsCount > MaxSwapsCount)
-	{
-		SetbIsRunVisualization(false);
-		GetDataAlgorithms()->ClearSwapData();
-		GetWorldTimerManager().ClearTimer(SwapTimer);
-
-		return;
-	}
-
-	int32 Index1 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount - 1].Index1;
-	int32 Index2 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount - 1].Index2;
+	Index1 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount].Index1;
+	Index2 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount].Index2;
 
 	ValueActor1 = GetSortingArrayBuilder()->ValueActorsArray[Index1];
 	ValueActor2 = GetSortingArrayBuilder()->ValueActorsArray[Index2];
@@ -209,8 +236,6 @@ void AVisualizationManager::SwapValueActors()
 
 	//UE_LOG(LogTemp, Warning, TEXT("EndLocationCurrentValueActor1 is %s."), *EndLocationCurrentValueActor1.ToString());
 
-	GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
-
 	//Go translate actors!
 	GetWorldTimerManager().SetTimer(TranslateTimer, this, &AVisualizationManager::TranslateValueActors, TranslateTimerDeltaTime, true);
 
@@ -222,12 +247,26 @@ void AVisualizationManager::TranslateValueActors()
 	CurrentCountOfIteration++;
 
 	//If used all iteration than correct finish point and start exchange next actors.
+	//Stop exchange if all exchanges was done.
 	if (CurrentCountOfIteration == CountOfIterationInt)
 	{
 		ValueActor1->SetActorLocation(EndLocationValueActor1);
 		ValueActor2->SetActorLocation(EndLocationValueActor2);
+		GetSortingArrayBuilder()->ValueActorsArray.Swap(Index1, Index2);
 
 		GetWorldTimerManager().ClearTimer(TranslateTimer);
+
+		CurrentSwapsCount++;
+		//Stop exchange if all exchanges was done.
+		if (CurrentSwapsCount >= MaxSwapsCount)
+		{
+			SetbIsRunVisualization(false);
+			GetDataAlgorithms()->ClearSwapData();
+			CurrentSwapsCount = 0;
+
+			return;
+		}
+
 		GetWorldTimerManager().SetTimer(SwapTimer, this, &AVisualizationManager::SwapValueActors, TimeBetweenSwaps, false, TimeBetweenSwaps);
 
 		return;

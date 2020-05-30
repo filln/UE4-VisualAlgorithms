@@ -125,6 +125,12 @@ private:
 	//Maximal count of exchange of actors.
 	size_t MaxSwapsCount;
 
+	//First index from the struct from the SwapStructArr. The struct contains indexes of actors that will be swap. 
+	int32 Index1;
+
+	//Second index from the struct from the SwapStructArr. The struct contains indexes of actors that will be swap.
+	int32 Index2;
+
 	//Actor that will be move.
 	AValueActor* ValueActor1;
 
@@ -177,6 +183,10 @@ public:
 	//Run visualization of the algorithm that was done.
 	UFUNCTION(BlueprintCallable, Category = "VisualizationManager")
 		void RunVisualization();
+
+	//Finish  the visualization immediately.
+	UFUNCTION(BlueprintCallable, Category = "VisualizationManager")
+		void FinishImmediately();
 
 	//State of visualization. If true than actors moving. Use for lock repeat command of visualization yet occur visualization.
 	UFUNCTION(BlueprintCallable, Category = "VisualizationManager")

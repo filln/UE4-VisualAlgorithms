@@ -68,6 +68,19 @@ void ASortingArrayBuilder::BuildVisibleArray()
 }
 
 
+void ASortingArrayBuilder::DestroySortAndVisibleArrays()
+{
+	for (size_t index = 0; index < SortingArray.Num(); index++)
+	{
+		IndexActorsArray[index]->Destroy();
+		ValueActorsArray[index]->Destroy();
+	}
+	IndexActorsArray.Empty();
+	ValueActorsArray.Empty();
+	SortingArray.Empty();
+
+}
+
 void ASortingArrayBuilder::SetReferenceToThis()
 {
 	AVisualAlgorithmsGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AVisualAlgorithmsGameModeBase>();

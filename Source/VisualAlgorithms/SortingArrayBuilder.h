@@ -72,6 +72,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
 		void BuildVisibleArray();
 
+	//Clear arrays and destroy all actors.
+	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
+		void DestroySortAndVisibleArrays();
+
 	//Count of the elements in the array for algorithms.
 	UFUNCTION(BlueprintCallable, Category = "SortingArrayBuilder")
 		void SetCountOfElements(int32 InCountOfElements) { CountOfElements = InCountOfElements; }
