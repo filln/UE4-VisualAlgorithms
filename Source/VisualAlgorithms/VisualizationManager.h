@@ -15,6 +15,11 @@ class ASortingArrayBuilder;
 class AIndexActor;
 class AValueActor;
 
+
+//The delegate call when start or stop visualization in AVisualizationManager::RunVisualization(), AVisualizationManager::FinishImmediately() and AVisualizationManager::TranslateValueActors().
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnIsRunVisualization, bool, bIsRunVisualization);
+
+
 /*
 To select a vector coordinate that will be calculated. This vector is normal for the actor rotation vector.
 I.e. it is the axis of the vector of rotation of the actor.
@@ -63,48 +68,52 @@ public:
 	//Public UPROPERTY() variables.
 public:
 
+	//The delegate call when start or stop visualization in AVisualizationManager::RunVisualization(), AVisualizationManager::FinishImmediately() and AVisualizationManager::TranslateValueActors().
+	UPROPERTY(BlueprintAssignable, Category = "VisualizationManager")
+		FOnIsRunVisualization OnIsRunVisualization;
+
 	//The time between actors exchanges. SwapTimer timer activation period.
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		float TimeBetweenSwaps;
 
 	//The time between little translates actors. TranslateTimer timer activation period.
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		float TranslateTimerDeltaTime;
 
 	//The duration of the movement of actors during the exchange.
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		float TimeDurationOfSwap;
 
 	//If true than the actors translate arc. If false than straight line.
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		bool bIsArc;
 
 	/*
 	To select a vector coordinate. This vector is normal for the actor rotation vector.
 	I.e. it is the axis of the vector of rotation of the actor.
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		FVector AxisValueActor1;
 
 	/*
 	To select a vector coordinate. This vector is normal for the actor rotation vector.
 	I.e. it is the axis of the vector of rotation of the actor.
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		FVector AxisValueActor2;
 
 	/*
 	To select a vector coordinate that will be calculated. This vector is normal for the actor rotation vector.
 	I.e. it is the axis of the vector of rotation of the actor.
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		EAxisStateValueActor1 AxisStateValueActor1;
 
 	/*
 	To select a vector coordinate that will be calculated. This vector is normal for the actor rotation vector.
 	I.e. it is the axis of the vector of rotation of the actor.
 	*/
-	UPROPERTY(EditDefaultsOnly, Category = "VisualizationManager")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VisualizationManager")
 		EAxisStateValueActor2 AxisStateValueActor2;
 
 	//Private variables.

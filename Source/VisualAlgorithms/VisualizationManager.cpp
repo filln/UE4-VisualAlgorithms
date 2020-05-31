@@ -40,11 +40,18 @@ void AVisualizationManager::SetReferenceToThis()
 
 void AVisualizationManager::RunVisualization()
 {
-	SetbIsRunVisualization(true);
-
 	CurrentSwapsCount = 0;
 	MaxSwapsCount = GetDataAlgorithms()->SwapStructArr.Num();
 
+	if (MaxSwapsCount == 0)
+	{
+		SetbIsRunVisualization(false);
+		return;
+	}
+
+	SetbIsRunVisualization(true);
+
+	OnIsRunVisualization.Broadcast(GetbIsRunVisualization());
 	SwapValueActors();
 
 }
@@ -85,6 +92,7 @@ void AVisualizationManager::FinishImmediately()
 	SetbIsRunVisualization(false);
 	GetDataAlgorithms()->ClearSwapData();
 	CurrentSwapsCount = 0;
+	OnIsRunVisualization.Broadcast(GetbIsRunVisualization());
 }
 
 ADataAlgorithms* AVisualizationManager::GetDataAlgorithms() const
@@ -263,6 +271,8 @@ void AVisualizationManager::TranslateValueActors()
 			SetbIsRunVisualization(false);
 			GetDataAlgorithms()->ClearSwapData();
 			CurrentSwapsCount = 0;
+
+			OnIsRunVisualization.Broadcast(GetbIsRunVisualization());
 
 			return;
 		}

@@ -26,15 +26,15 @@ public:
 public:
 
 	//Count of the elements in the array for algorithms.
-	UPROPERTY(EditDefaultsOnly, meta=(ClampMin="0"), Category = "SortingArrayBuilder")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(ClampMin="2"), Category = "SortingArrayBuilder")
 		int32 CountOfElements;
 
 	//Location from wich build the visual array IndexActor and ValueActor. 
-	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SortingArrayBuilder")
 		FVector BeginLocation;
 
 	//Step between previous actor and next actor in visual array.
-	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "SortingArrayBuilder")
 		FVector DeltaLocation;
 
 	//The array that will be sort.
