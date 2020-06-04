@@ -27,17 +27,17 @@ void ASortingAlgorithms::SetReferenceToThis()
 
 void ASortingAlgorithms::ShuffleArray(TArray<int32>& Arr)
 {
-	size_t lastIndex = Arr.Num() - 1;
+	int32 lastIndex = Arr.Num() - 1;
 
 	std::random_device rd;
 
 	//	std::mt19937 generator(rd());
 	std::default_random_engine generator(rd());
 
-	for (size_t index = 0; index <= lastIndex; index++)
+	for (int32 index = 0; index <= lastIndex; index++)
 	{
 		std::uniform_int_distribution<int> distribution(0, (int)lastIndex);
-		size_t randomIndex = distribution(generator);
+		int32 randomIndex = distribution(generator);
 
 		if (randomIndex == index)
 		{
@@ -59,16 +59,38 @@ void ASortingAlgorithms::ShuffleArray(TArray<int32>& Arr)
 
 }
 
+void ASortingAlgorithms::SelectSort(TArray<int32>& Arr)
+{
+
+	int32 lastIndex = Arr.Num() - 1;
+	int32 MinValue;
+	for (int32 index1 = 0; index1 < lastIndex; index1++)
+	{
+		int32 IndexMinValue = index1;
+		MinValue = Arr[index1];
+		for (int32 index2 = index1 + 1; index2 <= lastIndex; index2++)
+		{
+			if (Arr[index2] < MinValue)
+			{
+				IndexMinValue = index2;
+				MinValue = Arr[index2];
+			}
+		}
+		Arr.Swap(IndexMinValue, index1);
+		WriteSwapData(IndexMinValue, index1);
+	}
+}
+
 void ASortingAlgorithms::BubbleSort(TArray<int32>& Arr)
 {
 
-	size_t lastIndex = Arr.Num() - 1;
+	int32 lastIndex = Arr.Num() - 1;
 
 	bool isSwap = true;
 	while (isSwap)
 	{
 		isSwap = false;
-		for (size_t index = 0; index < lastIndex; index++)
+		for (int32 index = 0; index < lastIndex; index++)
 		{
 			if (Arr[index] > Arr[index + 1])
 			{
@@ -82,6 +104,89 @@ void ASortingAlgorithms::BubbleSort(TArray<int32>& Arr)
 	}
 
 }
+
+void ASortingAlgorithms::InsertSort(TArray<int32>& Arr)
+{
+	int32 lastIndex = Arr.Num() - 1;
+
+	for (int32 index1 = 1, index2; index1 <= lastIndex; index1++)						
+	{
+		for (index2 = index1; index2 > 0 && Arr[index2 - 1] > Arr[index2]; index2--)
+		{
+			Arr.Swap(index2 - 1, index2);
+			WriteSwapData(index2 - 1, index2);
+		}
+	}
+}
+
+//void ASortingAlgorithms::ShellSort(TArray<int32>& Arr)
+//{
+//	size_t	size = Arr.Num();
+//
+//
+//	for (size_t step = size / 2; step > 0; step /= 2)
+//	{
+//		for (size_t index1 = step; index1 < size; index1++)
+//		{
+//			for (size_t index2 = index1 - step; index2 >= 0; index2 -= step)
+//			{
+//				UE_LOG(LogTemp, Warning, TEXT("index2 is %d, index1 is %d, step is %d"), index2, index1, step);
+//				if (index2 > 0 && (index2 + step) > 0)
+//				{
+//					if (Arr[index2] > Arr[index2 + step])
+//					{
+//						Arr.Swap(index2, index2 + step);
+//					}
+//					//else
+//					//{
+//					//	break;
+//					//}
+//				}
+//			}
+//		}
+//	}
+//}
+
+void ASortingAlgorithms::ShellSort(TArray<int32>& Arr)
+{
+	int32
+		size = Arr.Num(),
+		step,
+		index1,
+		index2;
+
+	for (step = size / 2; step > 0; step /= 2)
+	{
+		for (index1 = step; index1 < size; index1++)
+		{
+			for (index2 = index1 - step; (index2 >= 0) && (Arr[index2] > Arr[index2 + step]); index2 -= step)
+			{
+				Arr.Swap(index2, index2 + step);
+				WriteSwapData(index2, index2 + step);
+			}
+		}
+	}
+}
+
+//void ASortingAlgorithms::ShellSort(TArray<int32>& Arr)
+//{
+//	size_t
+//		size = Arr.Num(),
+//		step,
+//		index1,
+//		index2;
+//
+//	for (step = size / 2; step > 0; step /= 2)
+//	{
+//		for (index1 = step; index1 < size; index1++)
+//		{
+//			for (index2 = index1 - step; (index2 >= 0) && (Arr[index2] > Arr[index2 + step]); index2 -= step)
+//			{
+//				Arr.Swap(index2, index2 + step);
+//			}
+//		}
+//	}
+//}
 
 ADataAlgorithms* ASortingAlgorithms::GetDataAlgorithms() const
 {

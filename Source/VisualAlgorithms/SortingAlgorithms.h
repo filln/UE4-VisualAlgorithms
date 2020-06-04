@@ -32,7 +32,16 @@ public:
 		void ShuffleArray(UPARAM(ref) TArray<int32>& Arr);
 
 	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void SelectSort(UPARAM(ref) TArray<int32>& Arr);
+
+	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
 		void BubbleSort(UPARAM(ref) TArray<int32>& Arr);
+
+	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void InsertSort(UPARAM(ref) TArray<int32>& Arr);
+
+	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void ShellSort(UPARAM(ref) TArray<int32>& Arr);
 
 	//Save data of exchange to SwapStructArr in DataAlgotithms.
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
