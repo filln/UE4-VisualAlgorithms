@@ -43,6 +43,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
 		void ShellSort(UPARAM(ref) TArray<int32>& Arr);
 
+	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void HeapSort(UPARAM(ref) TArray<int32>& Arr);
+
+	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void QuickSort(UPARAM(ref) TArray<int32>& Arr);
+
 	//Save data of exchange to SwapStructArr in DataAlgotithms.
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
 		void WriteSwapData(int32 Index1, int32 Index2);
@@ -53,6 +59,8 @@ private:
 
 	ADataAlgorithms* GetDataAlgorithms() const;
 
+	//Build pyramid for HeapSort().
+	void DownHeap(TArray<int32>& Arr, int32 index1, int32 index2);
 
 protected:
 	// Called when the game starts or when spawned
