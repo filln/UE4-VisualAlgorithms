@@ -1,6 +1,6 @@
 // Copyright 2020 Anatoli Kucharau. All Rights Reserved.
 
-/* 
+/*
 This class contains algorithms (shuffle, sorting etc.) and methods that save events in these algorithms.
 */
 
@@ -47,7 +47,10 @@ public:
 		void HeapSort(UPARAM(ref) TArray<int32>& Arr);
 
 	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
-		void QuickSort(UPARAM(ref) TArray<int32>& Arr);
+		void QuickSortIteration(UPARAM(ref) TArray<int32>& Arr);
+
+//	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithms")
+		void QuickSortRecursion(UPARAM(ref) TArray<int32>& Arr);
 
 	//Save data of exchange to SwapStructArr in DataAlgotithms.
 	UFUNCTION(BlueprintCallable, Category = "VisualAlgorithms")
@@ -61,6 +64,16 @@ private:
 
 	//Build pyramid for HeapSort().
 	void DownHeap(TArray<int32>& Arr, int32 index1, int32 index2);
+
+	//Inside function of QuickSortRecursion for more simple call in Blueprints.
+//	UFUNCTION(BlueprintCallable, Category = "SortingAlgorithmsInternal")
+	void _QuickSortRecursion(TArray<int32>& Arr, int32 firstIndex, int32 lastIndex);
+
+
+	//Private variables.
+private:
+
+	static const int32 MaxStack = 64;
 
 protected:
 	// Called when the game starts or when spawned

@@ -20,10 +20,21 @@ ASortingArrayBuilder::ASortingArrayBuilder()
 	IndexActorClass = AIndexActor::StaticClass();
 	ValueActorClass = AValueActor::StaticClass();
 
+	MaxCountOfElements = 1000;
+
 }
 
 void ASortingArrayBuilder::BuildSortingArray()
 {
+	if (CountOfElements > MaxCountOfElements)
+	{
+		CountOfElements = MaxCountOfElements;
+	}
+	if (CountOfElements < 2)
+	{
+		CountOfElements = 2;
+	}
+
 	SortingArray.Empty();
 	for (size_t index = 0; index < CountOfElements; index++)
 	{

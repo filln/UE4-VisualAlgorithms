@@ -220,6 +220,9 @@ private:
 	//Translate the actors and run SwapTimer at the end.
 	void TranslateValueActors();
 
+	//Check CurrentSwapsCount, if it is maximal value than stop swaping.
+	bool CheckSwapsCount();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

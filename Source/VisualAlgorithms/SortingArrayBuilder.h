@@ -26,7 +26,7 @@ public:
 public:
 
 	//Count of the elements in the array for algorithms.
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(ClampMin="2"), Category = "SortingArrayBuilder")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(ClampMin="2", ClampMax="1000"), Category = "SortingArrayBuilder")
 		int32 CountOfElements;
 
 	//Location from wich build the visual array IndexActor and ValueActor. 
@@ -56,6 +56,10 @@ public:
 	//Subclass of the ValueActors that will be spawn.
 	UPROPERTY(EditDefaultsOnly, Category = "SortingArrayBuilder")
 		TSubclassOf<AValueActor> ValueActorClass;
+
+	//Limit of CountOfElements.
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "SortingArrayBuilder")
+		int32 MaxCountOfElements;
 
 	//Public UFUNCTION functions;
 public:
@@ -91,6 +95,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 
 
 };

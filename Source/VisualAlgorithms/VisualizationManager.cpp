@@ -147,6 +147,20 @@ void AVisualizationManager::SwapValueActors()
 	Index1 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount].Index1;
 	Index2 = GetDataAlgorithms()->SwapStructArr[CurrentSwapsCount].Index2;
 
+	if (Index1 == Index2)
+	{
+		CurrentSwapsCount++;
+		//Stop exchange if all exchanges was done.
+		if (!CheckSwapsCount())
+		{
+			return;
+		}
+		else
+		{
+			SwapValueActors();
+		}
+	}
+
 	ValueActor1 = GetSortingArrayBuilder()->ValueActorsArray[Index1];
 	ValueActor2 = GetSortingArrayBuilder()->ValueActorsArray[Index2];
 
@@ -266,14 +280,8 @@ void AVisualizationManager::TranslateValueActors()
 
 		CurrentSwapsCount++;
 		//Stop exchange if all exchanges was done.
-		if (CurrentSwapsCount >= MaxSwapsCount)
+		if (!CheckSwapsCount())
 		{
-			SetbIsRunVisualization(false);
-			GetDataAlgorithms()->ClearSwapData();
-			CurrentSwapsCount = 0;
-
-			OnIsRunVisualization.Broadcast(GetbIsRunVisualization());
-
 			return;
 		}
 
@@ -302,6 +310,23 @@ void AVisualizationManager::TranslateValueActors()
 	ValueActor1->SetActorLocation(NextLocationValueActor1);
 	ValueActor2->SetActorLocation(NextLocationValueActor2);
 
+}
+
+bool AVisualizationManager::CheckSwapsCount()
+{
+	//Stop exchange if all exchanges was done.
+	if (CurrentSwapsCount >= MaxSwapsCount)
+	{
+		SetbIsRunVisualization(false);
+		GetDataAlgorithms()->ClearSwapData();
+		CurrentSwapsCount = 0;
+
+		OnIsRunVisualization.Broadcast(GetbIsRunVisualization());
+
+		return false;
+	}
+
+	return true;
 }
 
 // Called when the game starts or when spawned

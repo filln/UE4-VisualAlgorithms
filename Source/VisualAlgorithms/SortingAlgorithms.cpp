@@ -109,7 +109,7 @@ void ASortingAlgorithms::InsertSort(TArray<int32>& Arr)
 {
 	int32 lastIndex = Arr.Num() - 1;
 
-	for (int32 index1 = 1, index2; index1 <= lastIndex; index1++)						
+	for (int32 index1 = 1, index2; index1 <= lastIndex; index1++)
 	{
 		for (index2 = index1; index2 > 0 && Arr[index2 - 1] > Arr[index2]; index2--)
 		{
@@ -146,7 +146,7 @@ void ASortingAlgorithms::DownHeap(TArray<int32>& Arr, int32 index1, int32 index2
 		new_elem = Arr[index1],
 		child;
 
-	while (index1 <= index2 / 2) 
+	while (index1 <= index2 / 2)
 	{
 		child = 2 * index1;
 
@@ -190,39 +190,32 @@ void ASortingAlgorithms::HeapSort(TArray<int32>& Arr)
 }
 
 
-void ASortingAlgorithms::QuickSort(TArray<int32>& Arr)
-{
-	/*
+void ASortingAlgorithms::QuickSortIteration(TArray<int32>& Arr)
+{	
+	int32
+		index1, index2,
+		leftIndex, rightIndex,
+		middleIndex;
 
-	int32 MaxStack = 64;
-	int32 index1, index2; // указатели, участвующие в разделении
-	int32 lb, ub; // границы сортируемого в цикле фрагмента
+	int32 stackPos = 1; 
+	int32 Middle; 
 
-	int32 lbstack[MaxStack], ubstack[MaxStack]; // стек запросов
-	// каждый запрос задаетс€ парой значений,
-	// а именно: левой(lbstack) и правой(ubstack)
-	// границами промежутка
-	int32 stackpos = 1; // текуща€ позици€ стека
-	int32 ppos; // середина массива
-	int32 pivot; // опорный элемент
-	int32 temp;
-
-	lbstack[1] = 0;
-	ubstack[1] = size - 1;
+	int32 LIstack[MaxStack], RIstack[MaxStack]; 
+	
+	LIstack[1] = 0;
+	RIstack[1] = Arr.Num() - 1;
 
 	do {
-		// ¬з€ть границы lb и ub текущего массива из стека.
-		lb = lbstack[stackpos];
-		ub = ubstack[stackpos];
-		stackpos--;
+		leftIndex = LIstack[stackPos];
+		rightIndex = RIstack[stackPos];
+		stackPos--;
 
 		do {
-			// Ўаг 1. –азделение по элементу pivot
-			ppos = (lb + ub) >> 1;
-			index1 = lb; index2 = ub; pivot = Arr[ppos];
+			middleIndex = (leftIndex + rightIndex) >> 1;
+			index1 = leftIndex; index2 = rightIndex; Middle = Arr[middleIndex];
 			do {
-				while (Arr[index1] < pivot) index1++;
-				while (pivot < Arr[index2]) index2--;
+				while (Arr[index1] < Middle) index1++;
+				while (Middle < Arr[index2]) index2--;
 				if (index1 <= index2) {
 					Arr.Swap(index1, index2);
 					WriteSwapData(index1, index2);
@@ -230,32 +223,56 @@ void ASortingAlgorithms::QuickSort(TArray<int32>& Arr)
 				}
 			} while (index1 <= index2);
 
-			// —ейчас указатель i указывает на начало правого подмассива,
-			// j - на конец левого (см. иллюстрацию выше), lb ? j ? i ? ub.
-			// ¬озможен случай, когда указатель i или j выходит за границу массива
-
-			// Ўаги 2, 3. ќтправл€ем большую часть в стек и двигаем lb,ub
-			if (index1 < ppos) { // права€ часть больше
-				if (index1 < ub) { // если в ней больше 1 элемента - нужно
-					stackpos++; // сортировать, запрос в стек
-					lbstack[stackpos] = index1;
-					ubstack[stackpos] = ub;
+			if (index1 < middleIndex) { 
+				if (index1 < rightIndex) { 
+					stackPos++; 
+					LIstack[stackPos] = index1;
+					RIstack[stackPos] = rightIndex;
 				}
-				ub = index2; // следующа€ итераци€ разделени€
-				// будет работать с левой частью
+				rightIndex = index2; 
 			}
-			else { // лева€ часть больше
-				if (index2 > lb) {
-					stackpos++;
-					lbstack[stackpos] = lb;
-					ubstack[stackpos] = index2;
+			else {
+				if (index2 > leftIndex) {
+					stackPos++;
+					LIstack[stackPos] = leftIndex;
+					RIstack[stackPos] = index2;
 				}
-				lb = index1;
+				leftIndex = index1;
 			}
-		} while (lb < ub); // пока в меньшей части более 1 элемента
-	} while (stackpos != 0); // пока есть запросы в стеке
+		} while (leftIndex < rightIndex); 
+	} while (stackPos != 0); 	
+}
 
-	*/
+void ASortingAlgorithms::QuickSortRecursion(TArray<int32>& Arr)
+{
+	int32 lastIndex = Arr.Num() - 1;
+	_QuickSortRecursion(Arr, 0, lastIndex);
+}
+
+void ASortingAlgorithms::_QuickSortRecursion(TArray<int32>& Arr, int32 firstIndex, int32 lastIndex)
+{
+	UE_LOG(LogTemp, Warning, TEXT("lastIndex is %d."), lastIndex);
+
+	int32
+		index1 = firstIndex,
+		index2 = lastIndex;
+
+	int32 Middle = Arr[(firstIndex + lastIndex) / 2];
+
+	do {
+		while (Arr[index1] < Middle) index1++;
+		while (Arr[index2] > Middle) index2--;
+
+		if (index1 <= index2) {
+			Arr.Swap(index1, index2);
+			WriteSwapData(index1, index2);
+
+			index1++; index2--;
+		}
+	} while (index1 <= index2);
+
+	if (index2 > 0) _QuickSortRecursion(Arr, firstIndex, index2);
+	if (lastIndex > index1) _QuickSortRecursion(Arr, index1, lastIndex);
 }
 
 ADataAlgorithms* ASortingAlgorithms::GetDataAlgorithms() const
